@@ -1,5 +1,9 @@
 /*#f4a5a5;*/
 
+.front-page {
+  margin: auto;
+}
+
 .board {
   margin: auto;
   display: grid;
@@ -59,8 +63,4 @@ input {
 .submit-b {
   grid-column: 2;
   grid-row: 4;
-}
-
-.outcome {
-  grid-row: 5;
 }
