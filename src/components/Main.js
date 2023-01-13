@@ -1,56 +1,39 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import words from "./words.txt";
-import { calculate } from "./calculate";
-
 import "./Main.css";
+import WordCheck from "./WordCheck";
 
 function Main() {
+  // Test list
   const miniWordList = [
     "aardvark",
+    // "aroleptbwmqz",
     "alabama",
     "cayote",
-    "zzzzz",
     "zanzibar",
     "quest",
+    "razmataz",
   ];
 
-  const [result, setResult] = useState("");
+  const [result, setResult] = useState();
 
   const [char, setChar] = useState({
-    //top
-    A: "a",
-    B: "e",
-    C: "z",
-    //right
-    D: "c",
-    E: "z",
-    F: "z",
-    //bottom
-    G: "z",
-    H: "b",
-    I: "o",
-    //left
-    J: "y",
-    K: "z",
-    L: "t",
+    A: "n",
+    B: "o",
+    C: "l",
+    D: "g",
+    E: "t",
+    F: "v",
+    G: "m",
+    H: "a",
+    I: "r",
+    J: "b",
+    K: "u",
+    L: "e",
   });
 
   const [wordList, setWordList] = useState([]);
-  const [filled, setFilled] = useState({
-    A: "",
-    B: "",
-    C: "",
-    D: "",
-    E: "",
-    F: "",
-    G: "",
-    H: "",
-    I: "",
-    J: "",
-    K: "",
-    L: "",
-  });
 
   useEffect(() => {
     fetch(words)
@@ -63,12 +46,13 @@ function Main() {
 
   const handleChange = (event) => {
     setChar({ ...char, [event.target.name]: event.target.value });
-    //setFilled({ ...filled, [event.target.name]: "x" });
   };
 
   const doMaths = () => {
-    setResult(calculate(Object.values(char), miniWordList));
-    console.log("result ===", result);
+    console.log("Calculating");
+    // for some reason setWordlist wasn't working :/
+    setResult(<WordCheck char={Object.values(char)} wordList={wordList} />);
+    console.log("result: ", result);
   };
 
   return (
@@ -168,11 +152,20 @@ function Main() {
       <button onClick={doMaths} className="submit-b">
         Calculate
       </button>
-
-      {/**To do: box animation a different component? */}
       <div className="outcome">{result}</div>
     </div>
   );
 }
 
 export default Main;
+
+// If I wrote this a different way I would like to try basically brute forcing it until we find a 1-2 word solution
+// as it is right now the word list is ordered by what will add the most new letters to the list
+
+// go through the list and see which word will add the most new letters??
+
+// Next up:
+/**
+ * Go through the entire list and find the word that adds the most new letters from the current character list
+ * repeat
+ */
