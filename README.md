@@ -12,3 +12,8 @@ Users can add letters to the letter boxes at the top of the page (when opened th
 - Automatically update with the current day's puzzle
 - Address bug where sometimes the output is empty
 - Make the page look nicer
+
+## Contact me
+
+If you have any questions or concerns regarding the app, please don't hesitate to reach out to me at siggagreen@gmail.com or at [My Website](https://www.siggagreen.com/).
+Thank you for checking out my project!
