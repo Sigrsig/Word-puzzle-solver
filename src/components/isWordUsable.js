@@ -13,8 +13,19 @@ const puzzleSides = [
   "left",
 ];
 
+// Sorts the word list by words that actually work in this case
+export function sortWordList(wordList, puzzleLetters) {
+  let tempList = [];
+  for (let index = 0; index < wordList.length - 1; index++) {
+    if (isWordUsable(wordList[index], puzzleLetters)) {
+      tempList.push(wordList[index]);
+    }
+  }
+  return tempList;
+}
+
 // Checks if the word passed in is usable in the puzzle
-export function isWordUsable(word, puzzleLetters) {
+function isWordUsable(word, puzzleLetters) {
   let currentPuzzleSide = "";
 
   for (let l = 0; l < word.length; l++) {

@@ -1,6 +1,6 @@
 import React from "react";
 import { wordListSort } from "./wordListSort";
-import { isWordUsable } from "./isWordUsable";
+import { sortWordList } from "./isWordUsable";
 
 function WordCheck({ char, unsortedWordList }) {
   const duplicatesFound = findDuplicates(char).length > 0;
@@ -9,7 +9,6 @@ function WordCheck({ char, unsortedWordList }) {
 
   let wordList = wordListSort(unsortedWordList);
   let puzzleLetters = char.join("");
-  let wordChain = [];
 
   // Checking the chosen letters
   function findDuplicates(arr) {
@@ -23,26 +22,16 @@ function WordCheck({ char, unsortedWordList }) {
   }
 
   // Returns whether or not all the letters in the character list are used
-  function allLettersFound(word) {
+  function areAllLettersUsed(combinedWords) {
     for (let i = 0; i < puzzleLetters.length; i++) {
-      if (!word.includes(puzzleLetters[i])) return false;
+      if (!combinedWords.includes(puzzleLetters[i])) return false;
     }
     return true;
   }
 
-  // Sorts the word list by words that actually work in this case
-  function sortWordList(wordList) {
-    let tempList = [];
-    for (let index = 0; index < wordList.length - 1; index++) {
-      if (isWordUsable(wordList[index], puzzleLetters)) {
-        tempList.push(wordList[index]);
-      }
-    }
-    return tempList;
-  }
-
   function solvePuzzle() {
-    wordList = sortWordList(wordList);
+    wordList = sortWordList(wordList, puzzleLetters);
+
     let wordChain = [];
     console.log("starts solving");
     // Compares all words with one another and if all chosen letters are used up adds them to the word chain
@@ -52,7 +41,7 @@ function WordCheck({ char, unsortedWordList }) {
         let word2 = wordList[y];
         if (word1 !== word2 && word1[word1.length - 1] === word2[0]) {
           let tempWord = wordList[x] + wordList[y];
-          if (allLettersFound(tempWord)) {
+          if (areAllLettersUsed(tempWord)) {
             console.log("All letters found! ", tempWord);
             wordChain.push([`${word1}, ${word2}`]);
           }
