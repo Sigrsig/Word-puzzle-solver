@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { wordListSort } from "./wordListSort";
 
 function WordCheck({ char, unsortedWordList }) {
@@ -6,8 +6,7 @@ function WordCheck({ char, unsortedWordList }) {
   const numbersFound = findNumbers(char);
   const emptyFound = findEmpty(char);
 
-  // Add states??
-  const wordList = wordListSort(unsortedWordList);
+  let wordList = wordListSort(unsortedWordList);
   let puzzleLetters = char.join("");
   let wordChain = [];
 
@@ -81,85 +80,46 @@ function WordCheck({ char, unsortedWordList }) {
     }
   }
 
-  // Checks if this word has any unused letters
-  function usesNewLetters(word) {
+  // Returns whether or not all the letters in the character list are used
+  function allLettersFound(word) {
     for (let i = 0; i < puzzleLetters.length; i++) {
-      if (word.includes(puzzleLetters[i])) return true;
+      if (!word.includes(puzzleLetters[i])) return false;
     }
-    return false;
+    return true;
   }
 
-  // Returns how many new letters the word uses in the character array
-  // Used so that words that use up more individual letters are prioritised
-  function numbNewLetters(word) {
-    let letterfound = 0;
-    for (let i = 0; i < puzzleLetters.length; i++) {
-      if (word.includes(puzzleLetters[i])) letterfound++;
-    }
-    return letterfound;
-  }
-
-  //To do: Refactor this function
-  function solvePuzzle() {
-    while (remainingLetters() === true) {
-      let currentBestWord;
-      let newLettersUsed = 0;
-
-      // If this is the first matching word in the puzzle
-      if (wordChain.length === 0) {
-        for (let index = 0; index < wordList.length; index++) {
-          let wordToCheck = wordList[index];
-
-          if (checkWord(wordToCheck)) {
-            let currentLettersUsed = numbNewLetters(wordToCheck);
-            if (currentLettersUsed > newLettersUsed) {
-              newLettersUsed = currentLettersUsed;
-              currentBestWord = wordToCheck;
-            }
-          }
-        }
-        wordChain.push(currentBestWord);
-        newLettersUsed = 0;
-
-        console.log("current chain:", wordChain);
+  // Sorts the word list by words that actually work in this case
+  function sortWordList(wordList) {
+    let tempList = [];
+    for (let index = 0; index < wordList.length - 1; index++) {
+      if (checkWord(wordList[index])) {
+        tempList.push(wordList[index]);
       }
-      // If this is not the first word the word must start with the last letter of the last word chosen
-      else {
-        for (let index = 0; index < wordList.length; index++) {
-          let wordToCheck = wordList[index];
+    }
+    return tempList;
+  }
 
-          let tempWord = wordChain[wordChain.length - 1];
+  function solvePuzzle() {
+    wordList = sortWordList(wordList);
+    let wordChain = [];
 
-          let containsNewLetters = usesNewLetters(wordToCheck);
-          let notAlreadyChosen = !wordChain.includes(wordToCheck);
-
-          // make sure not to choose the same word twice and the word starts with the last letter of the last word
-          if (
-            notAlreadyChosen &&
-            tempWord.slice(-1) === wordToCheck.charAt(0) &&
-            // if the word adds more letters to the used letters
-            containsNewLetters
-          ) {
-            if (checkWord(wordToCheck)) {
-              // check how many new letters it adds to the game
-              let currentLettersUsed = numbNewLetters(wordToCheck);
-              if (currentLettersUsed > newLettersUsed) {
-                newLettersUsed = currentLettersUsed;
-                currentBestWord = wordToCheck;
-              }
-            }
+    // Compares all words with one another and if all chosen letters are used up adds them to the word chain
+    for (let x = 0; x < wordList.length - 1; x++) {
+      for (let y = 0; y < wordList.length - 1; y++) {
+        let word1 = wordList[x];
+        let word2 = wordList[y];
+        if (word1 !== word2 && word1[word1.length - 1] === word2[0]) {
+          let tempWord = wordList[x] + wordList[y];
+          if (allLettersFound(tempWord)) {
+            console.log("All letters found! ", tempWord);
+            wordChain.push([`${word1}, ${word2}`]);
           }
         }
-        wordChain.push(currentBestWord);
-        newLettersUsed = 0;
-
-        console.log("current chain:", wordChain);
       }
     }
     return wordChain;
   }
 
-  // todo: change these to setResult()
   if (duplicatesFound) {
     return <div>{"Duplicates found"}</div>;
   } else if (numbersFound) {
@@ -168,13 +128,17 @@ function WordCheck({ char, unsortedWordList }) {
     return <div>{"Empty input found"}</div>;
   } else if (remainingLetters() === true) {
     // Map this and style correctly
+
     let result = solvePuzzle();
     return (
-      <ol>
-        {result.map((word) => (
-          <li key={word}>{word}</li>
-        ))}
-      </ol>
+      <>
+        <h2>Solutions:</h2>
+        <ol>
+          {result.map((word) => (
+            <li key={word}>{word}</li>
+          ))}
+        </ol>
+      </>
     );
   }
   return null;

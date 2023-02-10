@@ -5,32 +5,21 @@ import "./Main.css";
 import WordCheck from "./WordCheck";
 
 function Main() {
-  // Test list
-  const miniWordList = [
-    "aardvark",
-    // "aroleptbwmqz",
-    "alabama",
-    "cayote",
-    "zanzibar",
-    "quest",
-    "razmataz",
-  ];
-
   const [result, setResult] = useState();
 
   const [char, setChar] = useState({
-    A: "n",
-    B: "o",
-    C: "l",
-    D: "g",
-    E: "t",
-    F: "v",
-    G: "m",
-    H: "a",
-    I: "r",
-    J: "b",
-    K: "u",
-    L: "e",
+    A: "b",
+    B: "x",
+    C: "n",
+    D: "e",
+    E: "o",
+    F: "c",
+    G: "r",
+    H: "s",
+    I: "t",
+    J: "i",
+    K: "g",
+    L: "l",
   });
 
   const [wordList, setWordList] = useState([]);
