@@ -1,6 +1,6 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import words from "./words.txt";
+import words from "../wordlists/words.txt";
 import "./Main.css";
 import WordCheck from "./WordCheck";
 
