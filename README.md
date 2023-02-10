@@ -12,6 +12,7 @@ Users can add letters to the letter boxes at the top of the page (when opened th
 - Automatically update with the current day's puzzle
 - Address bug where sometimes the output is empty
 - Make the page look nicer
+- Add a "What is this" and "How to" modal
 
 ## Contact me
 

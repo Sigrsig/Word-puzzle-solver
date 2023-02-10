@@ -8,18 +8,18 @@ function Main() {
   const [result, setResult] = useState();
 
   const [char, setChar] = useState({
-    A: "b",
-    B: "x",
-    C: "n",
-    D: "e",
+    A: "l",
+    B: "n",
+    C: "f",
+    D: "w",
     E: "o",
-    F: "c",
-    G: "r",
-    H: "s",
-    I: "t",
-    J: "i",
-    K: "g",
-    L: "l",
+    F: "y",
+    G: "i",
+    H: "e",
+    I: "d",
+    J: "m",
+    K: "r",
+    L: "p",
   });
 
   const [wordList, setWordList] = useState([]);
