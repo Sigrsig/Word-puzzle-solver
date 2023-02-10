@@ -1,6 +1,6 @@
 import React from "react";
 import { wordListSort } from "./wordListSort";
-import { sortWordList } from "./isWordUsable";
+import { sortWordList } from "./sortWordList";
 
 function WordCheck({ char, unsortedWordList }) {
   const duplicatesFound = findDuplicates(char).length > 0;
@@ -33,6 +33,7 @@ function WordCheck({ char, unsortedWordList }) {
     wordList = sortWordList(wordList, puzzleLetters);
 
     let wordChain = [];
+    let threeWordChain = [];
     console.log("starts solving");
     // Compares all words with one another and if all chosen letters are used up adds them to the word chain
     for (let x = 0; x < wordList.length; x++) {
@@ -42,13 +43,28 @@ function WordCheck({ char, unsortedWordList }) {
         if (word1 !== word2 && word1[word1.length - 1] === word2[0]) {
           let tempWord = wordList[x] + wordList[y];
           if (areAllLettersUsed(tempWord)) {
-            console.log("All letters found! ", tempWord);
             wordChain.push([`${word1}, ${word2}`]);
+          }
+        }
+
+        for (let z = 0; z < wordList.length; z++) {
+          let word3 = wordList[z];
+          if (
+            word1 !== word2 &&
+            word1[word1.length - 1] === word2[0] &&
+            word2[word2.length - 1] === word3[0]
+          ) {
+            let tempWord2 = wordList[x] + wordList[y] + wordList[z];
+            if (areAllLettersUsed(tempWord2)) {
+              threeWordChain.push([`${word1}, ${word2}, ${word3}`]);
+            }
           }
         }
       }
     }
-    return wordChain;
+    if (wordChain.length === 0) {
+      return threeWordChain;
+    } else return wordChain;
   }
 
   if (duplicatesFound) {
@@ -59,6 +75,7 @@ function WordCheck({ char, unsortedWordList }) {
     return <div>{"Empty input found"}</div>;
   } else {
     let result = solvePuzzle();
+    console.log("===", result);
     return (
       <>
         <h2>Solutions:</h2>
